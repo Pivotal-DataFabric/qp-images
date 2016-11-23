@@ -3,8 +3,7 @@ resources:
     type: git
     source:
       branch: master
-      uri: git@github.com:Pivotal-DataFabric/qp-images.git
-      private_key: {{qp_images_deploy_key}}
+      uri: https://github.com/Pivotal-DataFabric/qp-images
   - name: gpdb_perf
     type: docker-image
     __ignored: &dockerhub_credentials
