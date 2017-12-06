@@ -17,6 +17,8 @@ _main() {
 	it_has_ninja_17
 
 	it_has_executables
+
+	it_has_python_modules_visible_to_every_user
 }
 
 it_has_gcc() {
@@ -78,6 +80,21 @@ it_has_executables() {
 	)
 	for executable in "${EXECUTABLES[@]}"; do
 		type -p "${executable}"
+	done
+}
+
+it_has_python_modules_visible_to_every_user() {
+	useradd tom
+	local -a PYTHON_MODULES=(
+	psutil
+	lockfile
+	paramiko
+	epydoc
+	)
+
+	local module
+	for module in "${PYTHON_MODULES[@]}"; do
+		sudo -u tom -- python -c "import ${module}"
 	done
 }
 

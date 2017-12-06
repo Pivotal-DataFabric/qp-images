@@ -45,7 +45,7 @@ RUN env DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 RUN locale-gen en_US.UTF-8
 
-RUN pip install --user \
+RUN pip install \
 	psutil \
 	lockfile \
 	paramiko \

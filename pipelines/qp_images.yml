@@ -54,17 +54,18 @@ jobs:
 
   - name: gpdbdev
     plan:
-    - get: qp-images
+    - get: src
+      resource: qp-images
       trigger: true
     - put: gpdbdev_untested
       params:
-        build: qp-images/images/gpdbdev
+        build: src/images/gpdbdev
         cache: true
       get_params:
         save: true
     - task: test
       image: gpdbdev_untested
-      file: qp-images/images/gpdbdev/test.yml
+      file: src/images/gpdbdev/test.yml
     - put: gpdbdev
       params:
         load: gpdbdev_untested
