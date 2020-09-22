@@ -1,5 +1,0 @@
-platform: linux
-inputs:
-  - name: src
-run:
-  path: src/images/gpdbdev/test.bash

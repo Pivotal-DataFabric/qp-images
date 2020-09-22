@@ -1,5 +1,0 @@
-platform: linux
-inputs:
-  - name: qp-images
-run:
-  path: qp-images/images/gpdb_perf/test.bash

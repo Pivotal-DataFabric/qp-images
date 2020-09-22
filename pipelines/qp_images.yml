@@ -1,71 +1,8 @@
-__ignored: &dockerhub_credentials
-  username: {{docker_username}}
-  password: {{docker_password}}
-
 resources:
   - name: qp-images
     type: git
     source:
       branch: master
       uri: https://github.com/Pivotal-DataFabric/qp-images
-  - name: gpdb_perf
-    type: docker-image
-    source:
-      repository: pivotaldata/gpdb_perf
-      tag: latest
-      <<: *dockerhub_credentials
-  - name: gpdb_perf_dev_test
-    type: docker-image
-    source:
-      repository: pivotaldata/gpdb_perf
-      tag: test
-      <<: *dockerhub_credentials
-
-  - name: gpdbdev_untested
-    type: docker-image
-    source:
-      repository: pivotaldata/qp-gpdbdev
-      tag: untested
-      <<: *dockerhub_credentials
-  - name: gpdbdev
-    type: docker-image
-    source:
-      repository: pivotaldata/qp-gpdbdev
-      tag: latest
-      <<: *dockerhub_credentials
 
 jobs:
-  - name: gpdb_perf
-    plan:
-    - get: qp-images
-      trigger: true
-    - put: gpdb_perf_dev_test
-      params:
-        build: qp-images/images/gpdb_perf
-        cache: true
-      get_params:
-        save: true
-    - task: test_gpdb_perf
-      image: gpdb_perf_dev_test
-      file: qp-images/images/gpdb_perf/test.yml
-    - put: gpdb_perf
-      params:
-        load: gpdb_perf_dev_test
-
-  - name: gpdbdev
-    plan:
-    - get: src
-      resource: qp-images
-      trigger: true
-    - put: gpdbdev_untested
-      params:
-        build: src/images/gpdbdev
-        cache: true
-      get_params:
-        save: true
-    - task: test
-      image: gpdbdev_untested
-      file: src/images/gpdbdev/test.yml
-    - put: gpdbdev
-      params:
-        load: gpdbdev_untested
