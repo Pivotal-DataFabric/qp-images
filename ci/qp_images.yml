@@ -1,0 +1,35 @@
+resources:
+  - name: src
+    type: git
+    source:
+      branch: develop
+      uri: https://github.com/Pivotal-DataFabric/qp-images
+
+  - name: clang-toolchain
+    type: registry-image
+    source:
+      repository: gcr.io/data-orca/clang-toolchain
+      username: _json_key
+      password: ((qp-images-service-account-json-key)) # this is in credhub
+
+jobs:
+  - name: build
+    plan:
+      - get: src
+
+      - task: test
+        privileged: true
+        params:
+          TARGET: test
+          CONTEXT: images/clang-toolchain
+        file: src/ci/build.yml
+
+      - task: build
+        privileged: true
+        params:
+          CONTEXT: images/clang-toolchain
+        file: src/ci/build.yml
+
+      - put: clang-toolchain
+        params:
+          image: image/image.tar

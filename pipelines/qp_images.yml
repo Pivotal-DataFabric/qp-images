@@ -1,8 +1,0 @@
-resources:
-  - name: qp-images
-    type: git
-    source:
-      branch: master
-      uri: https://github.com/Pivotal-DataFabric/qp-images
-
-jobs:
