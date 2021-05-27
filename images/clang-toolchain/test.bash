@@ -10,6 +10,7 @@ it_has_executables() {
 	type -p git
 	type -p parallel
 	type -p ninja
+	type -p bear
 }
 
 _main() {
