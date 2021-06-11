@@ -10,9 +10,10 @@ RUN curl -fsSL "${KEY_URL}" | gpg --dearmor > /usr/share/keyrings/"${KEYRING}"
 RUN gpg --no-default-keyring --keyring /usr/share/keyrings/"${KEYRING}" --list-keys "${KEY_ID}"
 
 FROM ubuntu:focal AS base
+ARG LLVM_VERSION=12
 RUN apt-get update -q && apt-get upgrade -y ca-certificates
 COPY --from=llvm-gpg-key /usr/share/keyrings/llvm.gpg /usr/share/keyrings/llvm.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main" > /etc/apt/sources.list.d/llvm-toolchain.list
+RUN echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/focal/ llvm-toolchain-focal-${LLVM_VERSION} main" > /etc/apt/sources.list.d/llvm-toolchain.list
 RUN apt-get update -q
 RUN apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	bear \
@@ -20,8 +21,8 @@ RUN apt-get update -q && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	bison \
 	flex \
 	cmake \
-	clang-format-12 \
-	clang-tidy-12 \
+	clang-format-"${LLVM_VERSION}" \
+	clang-tidy-"${LLVM_VERSION}" \
 	git \
 	parallel \
 	ninja-build \
